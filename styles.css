@@ -45,6 +45,7 @@ body{
 		}
 	}
 	>.category-content{
+		align-items:start;
 		display:none;
 		gap:1em;
 		grid-auto-flow:column;
@@ -57,10 +58,10 @@ body{
 			cursor:pointer;
 			padding:.5em;
 			text-align:center;
-			height:grid-auto-flow;
 			width:min-content;
 			>.title{
 				font-family:UbuntuSansBold;
+				margin-bottom:.25em;
 				white-space:nowrap;
 			}
 			>.description{
