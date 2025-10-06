@@ -6,7 +6,7 @@ function setScripts(category){
 		element.style.display=`none`
 	}
 	try{
-		document.getElementById(category.innerText).style.display=`grid`
+		document.getElementById(category.innerText).style.display=`initial`
 		category.classList.add(`hovered`)
 	}catch{}
 }
