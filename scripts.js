@@ -10,6 +10,7 @@ function setScripts(category){
 		category.classList.add(`hovered`)
 	}catch{}
 }
+let generationTextHeader=`#\tthis text was generated using endless-sky-generator on github\n`
 async function scriptVanillaOutfitter(){
 	let outfits=[]
 	try{
@@ -22,7 +23,7 @@ async function scriptVanillaOutfitter(){
 				.map(outfit=>outfit.replace(`outfit `,``))
 			)
 		}
-		await copyToClipboard(`outfitter "cheater: everything"\n\t${outfits.sort().join(`\n\t`)}`)
+		await copyToClipboard(`${generationTextHeader}outfitter "cheater: everything"\n\t${outfits.sort().join(`\n\t`)}`)
 	}catch(error){
 		alert(`Error: ${error.message||error}`)
 	}
@@ -46,7 +47,23 @@ async function scriptVanillaShipyards(){
 				}
 			})
 		}
-		await copyToClipboard(`shipyard "cheater: everything base"\n\t${ships.sort().join(`\n\t`)}\nshipyard "cheater: everything variant"\n\t${shipVariants.sort().join(`\n\t`)}`)
+		await copyToClipboard(`${generationTextHeader}shipyard "cheater: everything base"\n\t${ships.sort().join(`\n\t`)}\nshipyard "cheater: everything variant"\n\t${shipVariants.sort().join(`\n\t`)}`)
+	}catch(error){
+		alert(`Error: ${error.message||error}`)
+	}
+}
+async function scriptVanillaRevealSystems(){
+	let systems=[]
+	try{
+		await updateVanillaData()
+		for(let file of Object.values(vanillaDataFiles)){
+			systems.push(...file
+				.split(`\n`)
+				.filter(line=>line.startsWith(`system `))
+				.map(line=>line.replace(`system `,``))
+			)
+		}
+		await copyToClipboard(`${generationTextHeader}event "cheater: reveal vanilla systems"\n\tvisit ${systems.sort().join(`\n\tvisit `)}`)
 	}catch(error){
 		alert(`Error: ${error.message||error}`)
 	}
