@@ -28,9 +28,8 @@ async function scriptVanillaOutfitter(){
 		alert(`Error: ${error.message||error}`)
 	}
 }
-async function scriptVanillaShipyards(){
+async function scriptVanillaShipyard(){
 	let ships=[]
-	let shipVariants=[]
 	try{
 		await updateVanillaData()
 		for(let file of Object.values(vanillaDataFiles)){
@@ -39,15 +38,11 @@ async function scriptVanillaShipyards(){
 				if(!line.startsWith(`ship `)){return}
 				let match=line.match(regex)
 				if(match){
-					if(match[3]){
-						shipVariants.push(`${match[3]}`)
-					}else{
-						ships.push(match[1])
-					}
+					ships.push(match[3]||match[1])
 				}
 			})
 		}
-		await copyToClipboard(`${generationTextHeader}shipyard "cheater: everything base"\n\t${ships.sort().join(`\n\t`)}\nshipyard "cheater: everything variant"\n\t${shipVariants.sort().join(`\n\t`)}`)
+		await copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${ships.sort().join(`\n\t`)}`)
 	}catch(error){
 		alert(`Error: ${error.message||error}`)
 	}
