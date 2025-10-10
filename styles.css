@@ -23,6 +23,9 @@ body{
 	flex-direction:column;
 	font-family:UbuntuSans;
 	margin:0;
+	hr{
+		margin:0;
+	}
 	>#banner{
 		background:white;
 		border-bottom:1px solid #aaa;
@@ -31,16 +34,16 @@ body{
 		font-size:1.25em;
 		gap:1.25rem;
 		padding:.5rem .75rem;
-		>.category{
+		>div[onclick]{
 			border-radius:.5em;
 			cursor:pointer;
 			padding:.25em .5em;
 		}
-		>.category:hover,
-		>.category.hovered{
+		>div[onclick]:hover,
+		>.hovered{
 			background:#ddd;
 		}
-		>.category.hovered{
+		>.hovered{
 			pointer-events:none;
 		}
 	}

@@ -14,8 +14,7 @@ let generationTextHeader=`#\tthis text was generated using endless-sky-generator
 async function scriptVanillaOutfitter(){
 	let outfits=[]
 	try{
-		await updateVanillaData()
-		for(let file of Object.values(vanillaDataFiles)){
+		for(let file of Object.values(dataFiles)){
 			let outfitLines=file
 				.split(`\n`)
 				.filter(line=>line.startsWith(`outfit `))
@@ -31,8 +30,7 @@ async function scriptVanillaOutfitter(){
 async function scriptVanillaShipyard(){
 	let ships=[]
 	try{
-		await updateVanillaData()
-		for(let file of Object.values(vanillaDataFiles)){
+		for(let file of Object.values(dataFiles)){
 			let regex=/^ship\s+((["'`]).+?\2|[^\s]+)(?:\s+((["'`]).+?\4|[^\s]+))?$/
 			file.split(`\n`).forEach(function(line){
 				if(!line.startsWith(`ship `)){return}
@@ -50,8 +48,7 @@ async function scriptVanillaShipyard(){
 async function scriptVanillaRevealSystems(){
 	let systems=[]
 	try{
-		await updateVanillaData()
-		for(let file of Object.values(vanillaDataFiles)){
+		for(let file of Object.values(dataFiles)){
 			systems.push(...file
 				.split(`\n`)
 				.filter(line=>line.startsWith(`system `))
@@ -63,16 +60,35 @@ async function scriptVanillaRevealSystems(){
 		alert(`Error: ${error.message||error}`)
 	}
 }
-let vanillaDataFiles={}
+let dataFiles=[]
+function importData(){
+	let input=document.createElement(`input`)
+	input.type=`file`
+	input.webkitdirectory=true
+	input.multiple=true
+	input.style.display=`none`
+	input.onchange=async event=>{
+		for(let file of event.target.files){
+			try{
+				if(!file.name.endsWith(`.txt`)){continue}
+				dataFiles.push(await file.text())
+			}catch{}
+		}
+		console.log(dataFiles)
+	}
+	document.body.appendChild(input)
+	input.click()
+	document.body.removeChild(input)
+}
 async function updateVanillaData(){
-	vanillaDataFiles={}
+	dataFiles=[]
 	try{
 		let files=await getEndlessSkyData()
 		for(let file of files){
-			vanillaDataFiles[file.path.split(`/`).pop()]=file.text
+			dataFiles.push(file.text)
 		}
-	}catch(error){
-		throw new Error(`Failed to update vanilla data`)
+	}catch{
+		alert(`Failed to fetch vanilla data. Your Github API fetching limit has been exceeded, try again later.`)
 	}
 }
 async function getEndlessSkyData(){

@@ -6,31 +6,34 @@
 	</head>
 	<body spellcheck="false">
 		<div id="banner">
+			<div onclick="updateVanillaData()">Fetch Vanilla Data</div>
+			<div onclick="importData()">Upload Data</div>
+			<hr>
 			<div class="category" onclick="setScripts(this)">Cheater</div>
 		</div>
 		<div class="category-content" id="Cheater">
 			<div class="script" onclick="scriptVanillaOutfitter()">
 				<div class="title">
-					Vanilla Outfitter
+					Generate Outfitter
 				</div>
 				<div class="description">
-					Generates an outfitter for all outfits in vanilla by searching all data files from the github repository.
+					Generates an outfitter for all outfits in the loaded data.
 				</div>
 			</div>
 			<div class="script" onclick="scriptVanillaShipyard()">
 				<div class="title">
-					Vanilla Shipyard
+					Generate Shipyard
 				</div>
 				<div class="description">
-					Generates a shipyard for all ships in vanilla, both base model and variants, by searching all data files from the github repository.
+					Generates a shipyard for all ships in the loaded data, both base model and variants.
 				</div>
 			</div>
 			<div class="script" onclick="scriptVanillaRevealSystems()">
 				<div class="title">
-					Vanilla Reveal Systems
+					Generate Reveal Systems Event
 				</div>
 				<div class="description">
-					Generates an event which reveals all vanilla systems by searching all data files from the github repository.
+					Generates an event which reveals all systems in the loaded data.
 				</div>
 			</div>
 		</div>
