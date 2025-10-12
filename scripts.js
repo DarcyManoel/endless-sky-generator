@@ -60,6 +60,28 @@ async function scriptVanillaRevealSystems(){
 		alert(`Error: ${error.message||error}`)
 	}
 }
+function parseLinesToTree(){
+	let nodes=[]
+	let stack=[{children:nodes,indent:-1}] // initialize stack with virtual root nodes for hierarchy tracking
+	for(let fileText of dataFiles){
+		let lines=fileText
+			.replace(/#.*$/gm,``) // remove comments since Endless Sky uses `#` for comment lines
+			.split(/\n/) // split text into lines to process sequentially
+		for(let line of lines){
+			if(!line.trim())continue // skip empty or whitespace-only lines since they hold no data
+			let indent=line.match(/^\t*/)[0].length // count leading tabs to determine indentation depth
+			let node={line:line.trim(),children:[]} // create a node object with line content and empty children array
+			let closestStack=stack[stack.length-1] // cache most recently stacked node to reduce operations
+			while(stack.length&&closestStack.indent>=indent){
+				stack.pop() // remove the most recently stacked node since its indent is too deep to be the parent of the current line
+				closestStack=stack[stack.length-1] // update reference to the new top of the stack to find the correct parent
+			} // ensure the stack's top node has an indent smaller than the current line so we attach the node to the correct parent
+			closestStack.children.push(node) // attach current node to the most recent valid parent
+			stack.push({...node,indent}) // push current node onto stack with its indent level to track nesting
+		}
+	}
+	return nodes
+}
 let dataFiles=[]
 function importData(){
 	let input=document.createElement(`input`)
@@ -74,7 +96,6 @@ function importData(){
 				dataFiles.push(await file.text())
 			}catch{}
 		}
-		console.log(dataFiles)
 	}
 	document.body.appendChild(input)
 	input.click()
