@@ -11,57 +11,26 @@ function setScripts(category){
 	}catch{}
 }
 let generationTextHeader=`#\tthis text was generated using endless-sky-generator on github\n`
-async function scriptVanillaOutfitter(){
-	let outfits=[]
-	try{
-		for(let file of Object.values(dataFiles)){
-			let outfitLines=file
-				.split(`\n`)
-				.filter(line=>line.startsWith(`outfit `))
-			outfits.push(...outfitLines
-				.map(outfit=>outfit.replace(`outfit `,``))
-			)
-		}
-		await copyToClipboard(`${generationTextHeader}outfitter "cheater: everything"\n\t${outfits.sort().join(`\n\t`)}`)
-	}catch(error){
-		alert(`Error: ${error.message||error}`)
-	}
+function scriptVanillaOutfitter(){
+	let outfitNames=nodes
+		.filter(node=>node.line.startsWith(`outfit `)) // select only nodes that define outfits
+		.map(outfit=>outfit.line.slice(7)) // extract outfit name by removing the node key
+	copyToClipboard(`${generationTextHeader}outfitter "cheater: everything"\n\t${outfitNames.sort().join(`\n\t`)}`) // copy formatted outfitter block to clipboard with sorted outfit names
 }
-async function scriptVanillaShipyard(){
-	let ships=[]
-	try{
-		for(let file of Object.values(dataFiles)){
-			let regex=/^ship\s+((["'`]).+?\2|[^\s]+)(?:\s+((["'`]).+?\4|[^\s]+))?$/
-			file.split(`\n`).forEach(function(line){
-				if(!line.startsWith(`ship `)){return}
-				let match=line.match(regex)
-				if(match){
-					ships.push(match[3]||match[1])
-				}
-			})
-		}
-		await copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${ships.sort().join(`\n\t`)}`)
-	}catch(error){
-		alert(`Error: ${error.message||error}`)
-	}
+function scriptVanillaShipyard(){
+	let shipNames=nodes
+		.filter(node=>node.line.startsWith(`ship `)) // select only nodes that define ships
+		.map(ship=>ship.line.match(/(['"`])(?:\\.|(?!\1).)*?\1/g)?.at(-1)) // extract only the last quoted ship name from the line, to account for variant ships
+	copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${shipNames.sort().join(`\n\t`)}`) // copy formatted shipyard block to clipboard with sorted ship names
 }
-async function scriptVanillaRevealSystems(){
-	let systems=[]
-	try{
-		for(let file of Object.values(dataFiles)){
-			systems.push(...file
-				.split(`\n`)
-				.filter(line=>line.startsWith(`system `))
-				.map(line=>line.replace(`system `,``))
-			)
-		}
-		await copyToClipboard(`${generationTextHeader}event "cheater: reveal vanilla systems"\n\tvisit ${systems.sort().join(`\n\tvisit `)}`)
-	}catch(error){
-		alert(`Error: ${error.message||error}`)
-	}
+function scriptVanillaRevealSystems(){
+	let systemNames=nodes
+		.filter(node=>node.line.startsWith(`system `)) // select only nodes that define systems
+		.map(system=>system.line.slice(7)) // extract system name by removing the node key
+	copyToClipboard(`${generationTextHeader}event "cheater: reveal vanilla systems"\n\tvisit ${systemNames.sort().join(`\n\tvisit `)}`) // copy formatted event block that marks all vanilla systems as visited to clipboard with sorted system names
 }
+let nodes=[]
 function parseLinesToTree(){
-	let nodes=[]
 	let stack=[{children:nodes,indent:-1}] // initialize stack with virtual root nodes for hierarchy tracking
 	for(let fileText of dataFiles){
 		let lines=fileText
@@ -96,6 +65,7 @@ function importData(){
 				dataFiles.push(await file.text())
 			}catch{}
 		}
+		parseLinesToTree()
 	}
 	document.body.appendChild(input)
 	input.click()
@@ -139,9 +109,9 @@ async function getEndlessSkyData(){
 	}
 	return recurse()
 }
-async function copyToClipboard(textToCopy){
+function copyToClipboard(textToCopy){
 	try{
-		await navigator.clipboard.writeText(textToCopy)
+		navigator.clipboard.writeText(textToCopy)
 		alert(`Text copied to clipboard.`)
 	}catch(error){
 		alert('Failed to copy text: ',error)
