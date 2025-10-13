@@ -15,19 +15,22 @@ function scriptVanillaOutfitter(){
 	let outfitNames=nodes
 		.filter(node=>node.line.startsWith(`outfit `)) // select only nodes that define outfits
 		.map(outfit=>outfit.line.slice(7)) // extract outfit name by removing the node key
-	copyToClipboard(`${generationTextHeader}outfitter "cheater: everything"\n\t${outfitNames.sort().join(`\n\t`)}`) // copy formatted outfitter block to clipboard with sorted outfit names
+		.sort()
+	copyToClipboard(`${generationTextHeader}outfitter "cheater: everything"\n\t${outfitNames.join(`\n\t`)}`) // copy formatted outfitter block to clipboard
 }
 function scriptVanillaShipyard(){
 	let shipNames=nodes
 		.filter(node=>node.line.startsWith(`ship `)) // select only nodes that define ships
 		.map(ship=>ship.line.match(/(['"`])(?:\\.|(?!\1).)*?\1/g)?.at(-1)) // extract only the last quoted ship name from the line, to account for variant ships
-	copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${shipNames.sort().join(`\n\t`)}`) // copy formatted shipyard block to clipboard with sorted ship names
+		.sort()
+	copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${shipNames.join(`\n\t`)}`) // copy formatted shipyard block to clipboard
 }
 function scriptVanillaRevealSystems(){
 	let systemNames=nodes
 		.filter(node=>node.line.startsWith(`system `)) // select only nodes that define systems
 		.map(system=>system.line.slice(7)) // extract system name by removing the node key
-	copyToClipboard(`${generationTextHeader}event "cheater: reveal vanilla systems"\n\tvisit ${systemNames.sort().join(`\n\tvisit `)}`) // copy formatted event block that marks all vanilla systems as visited to clipboard with sorted system names
+		.sort()
+	copyToClipboard(`${generationTextHeader}event "cheater: reveal vanilla systems"\n\tvisit ${systemNames.join(`\n\tvisit `)}`) // copy formatted event block that marks all vanilla systems as visited to clipboard
 }
 let nodes=[]
 function parseLinesToTree(){
