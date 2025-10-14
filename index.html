@@ -9,31 +9,33 @@
 			<div onclick="updateVanillaData()">Fetch Vanilla Data</div>
 			<div onclick="importData()">Upload Data</div>
 			<hr>
-			<div class="category" onclick="setScripts(this)">Cheater</div>
 		</div>
-		<div class="category-content" id="Cheater">
-			<div class="script" onclick="scriptVanillaOutfitter()">
-				<div class="title">
-					Generate Outfitter
+		<div class="category-content details" id="Cheater" open>
+			<div class="summary" onclick="this.parentElement.toggleAttribute(`open`)">CHEATER</div>
+			<div class="content">
+				<div class="script" onclick="scriptVanillaOutfitter()">
+					<div class="title">
+						Generate Outfitter
+					</div>
+					<div class="description">
+						Generates an outfitter for all outfits in the loaded data.
+					</div>
 				</div>
-				<div class="description">
-					Generates an outfitter for all outfits in the loaded data.
+				<div class="script" onclick="scriptVanillaShipyard()">
+					<div class="title">
+						Generate Shipyard
+					</div>
+					<div class="description">
+						Generates a shipyard for all ships in the loaded data, both base model and variants.
+					</div>
 				</div>
-			</div>
-			<div class="script" onclick="scriptVanillaShipyard()">
-				<div class="title">
-					Generate Shipyard
-				</div>
-				<div class="description">
-					Generates a shipyard for all ships in the loaded data, both base model and variants.
-				</div>
-			</div>
-			<div class="script" onclick="scriptVanillaRevealSystems()">
-				<div class="title">
-					Generate Reveal Systems Event
-				</div>
-				<div class="description">
-					Generates an event which reveals all systems in the loaded data.
+				<div class="script" onclick="scriptVanillaRevealSystems()">
+					<div class="title">
+						Generate Reveal Systems Event
+					</div>
+					<div class="description">
+						Generates an event which reveals all systems in the loaded data.
+					</div>
 				</div>
 			</div>
 		</div>

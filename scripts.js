@@ -1,15 +1,3 @@
-function setScripts(category){
-	for(let element of document.getElementsByClassName(`category`)){
-		element.classList.remove(`hovered`)
-	}
-	for(let element of document.getElementsByClassName(`category-content`)){
-		element.style.display=`none`
-	}
-	try{
-		document.getElementById(category.innerText).style.display=`initial`
-		category.classList.add(`hovered`)
-	}catch{}
-}
 let generationTextHeader=`#\tthis text was generated using endless-sky-generator on github\n`
 function scriptVanillaOutfitter(){
 	let outfitNames=nodes
