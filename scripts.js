@@ -22,6 +22,7 @@ function scriptVanillaRevealSystems(){
 }
 let nodes=[]
 function parseLinesToTree(){
+	nodes=[]
 	let stack=[{children:nodes,indent:-1}] // initialize stack with virtual root nodes for hierarchy tracking
 	for(let fileText of dataFiles){
 		let lines=fileText
@@ -50,6 +51,7 @@ function importData(){
 	input.multiple=true
 	input.style.display=`none`
 	input.onchange=async event=>{
+		dataFiles=[]
 		for(let file of event.target.files){
 			try{
 				if(!file.name.endsWith(`.txt`)){continue}
@@ -57,6 +59,7 @@ function importData(){
 			}catch{}
 		}
 		parseLinesToTree()
+		document.querySelectorAll(`.category-content`).forEach(element=>element.classList.remove(`blocked`))
 	}
 	document.body.appendChild(input)
 	input.click()

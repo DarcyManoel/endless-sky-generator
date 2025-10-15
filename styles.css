@@ -23,8 +23,8 @@ body{
 	flex-direction:column;
 	font-family:UbuntuSans;
 	margin:0;
-	hr{
-		margin:0;
+	.blocked{
+		pointer-events:none;
 	}
 	>#banner{
 		background:white;
@@ -100,7 +100,7 @@ body{
 			}
 		}
 	}
-	>.details[open]{
+	>.details[open]:not(.blocked){
 		>.summary{
 			opacity:1;
 		}
