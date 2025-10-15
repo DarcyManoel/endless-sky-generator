@@ -62,44 +62,6 @@ function importData(){
 	input.click()
 	document.body.removeChild(input)
 }
-async function updateVanillaData(){
-	dataFiles=[]
-	try{
-		let files=await getEndlessSkyData()
-		for(let file of files){
-			dataFiles.push(file.text)
-		}
-	}catch{
-		alert(`Failed to fetch vanilla data. Your Github API fetching limit has been exceeded, try again later.`)
-	}
-}
-async function getEndlessSkyData(){
-	let url=`https://api.github.com/repos/endless-sky/endless-sky/contents/data`
-	async function recurse(path=``){
-		let response=await fetch(`${url}/${path}`)
-		if(!response.ok){
-			return
-		}
-		let items=await response.json()
-		let files=items
-			.filter(item=>item.type===`file`&&item.name.endsWith(`.txt`))
-		let directories=items
-			.filter(item=>item.type===`dir`)
-			.map(directory=>recurse(directory.path.replace(/^data\//,``)))
-		let texts=files
-			.map(async file=>{
-				let textResponse=await fetch(file.download_url)
-				if(!textResponse.ok){
-					throw new Error(`Download failed: ${file.name}`)
-				}
-				let text=await textResponse.text()
-				return{path:file.path,text}
-			})
-		let results=await Promise.all([...texts,...directories])
-		return results.flat()
-	}
-	return recurse()
-}
 function copyToClipboard(textToCopy){
 	try{
 		navigator.clipboard.writeText(textToCopy)
