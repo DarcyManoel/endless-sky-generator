@@ -1,17 +1,14 @@
 let generationTextHeader=`#\tthis text was generated using endless-sky-generator on github\n`
-function scriptVanillaOutfitter(){
-	let outfitNames=nodes
-		.filter(node=>node.line.startsWith(`outfit `)) // select only nodes that define outfits
-		.map(outfit=>outfit.line.slice(7)) // extract outfit name by removing the node key
-		.sort()
-	copyToClipboard(`${generationTextHeader}outfitter "cheater: everything"\n\t${outfitNames.join(`\n\t`)}`) // copy formatted outfitter block to clipboard
-}
-function scriptVanillaShipyard(){
+function scriptGenerateSales(){
 	let shipNames=nodes
 		.filter(node=>node.line.startsWith(`ship `)) // select only nodes that define ships
 		.map(ship=>ship.line.match(/(['"`])(?:\\.|(?!\1).)*?\1/g)?.at(-1)) // extract only the last quoted ship name from the line, to account for variant ships
 		.sort()
-	copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${shipNames.join(`\n\t`)}`) // copy formatted shipyard block to clipboard
+	let outfitNames=nodes
+		.filter(node=>node.line.startsWith(`outfit `)) // select only nodes that define outfits
+		.map(outfit=>outfit.line.slice(7)) // extract outfit name by removing the node key
+		.sort()
+	copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${shipNames.join(`\n\t`)}\noutfitter "cheater: everything"\n\t${outfitNames.join(`\n\t`)}`) // copy formatted sales block to clipboard
 }
 function scriptVanillaRevealSystems(){
 	let systemNames=nodes
