@@ -15,7 +15,14 @@ function scriptVanillaRevealSystems(){
 		.filter(node=>node.line.startsWith(`system `)) // select only nodes that define systems
 		.map(system=>system.line.slice(7)) // extract system name by removing the node key
 		.sort()
-	copyToClipboard(`${generationTextHeader}event "cheater: reveal vanilla systems"\n\tvisit ${systemNames.join(`\n\tvisit `)}`) // copy formatted event block that marks all vanilla systems as visited to clipboard
+	let shroudedSystemNames=nodes
+		.filter(node=>node.line.startsWith(`system `)) // select only nodes that define systems
+		.filter(system=>system.children
+			.some(child=>child.line.includes(`shrouded`))
+		) // keep only systems with a child line containing 'shrouded'
+		.map(system=>system.line.slice(7)) // extract system name by removing the node key
+		.sort()
+	copyToClipboard(`${generationTextHeader}event "cheater: reveal vanilla systems"\n\tvisit ${systemNames.join(`\n\tvisit `)}\nevent "cheater: reveal shrouded systems"${shroudedSystemNames.map(system=>`\n\tsystem ${system}\n\t\tremove shrouded`).join(``)}`) // copy formatted event block that marks all vanilla systems as visited to clipboard
 }
 let nodes=[]
 function parseLinesToTree(){
