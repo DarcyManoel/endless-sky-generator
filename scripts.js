@@ -6,6 +6,9 @@ function scriptCheaterSales(){
 		.sort()
 	let outfitNames=nodes
 		.filter(node=>node.line.startsWith(`outfit `)) // select only nodes that define outfits
+		.filter(outfit=>outfit.children
+			.some(child=>child.line.includes(`category`))
+		) // keep only outfits with a child line containing 'category'
 		.map(outfit=>outfit.line.slice(7)) // extract outfit name by removing the node key
 		.sort()
 	copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${shipNames.join(`\n\t`)}\noutfitter "cheater: everything"\n\t${outfitNames.join(`\n\t`)}`) // copy formatted sales block to clipboard
