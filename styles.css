@@ -23,6 +23,9 @@ body{
 	flex-direction:column;
 	font-family:UbuntuSans;
 	margin:0;
+	b{
+		font-family:UbuntuSansBold;
+	}
 	.blocked{
 		pointer-events:none;
 	}
@@ -78,14 +81,18 @@ body{
 				cursor:pointer;
 				margin-bottom:.5em;
 				padding:.5em;
-				text-align:center;
-				text-wrap-style:balance;
 				>.title{
+					border-bottom:1px solid lightgrey;
 					font-family:UbuntuSansBold;
 					margin-bottom:.25em;
+					text-align:center;
 				}
 				>.description{
 					font-size:.8em;
+				}
+				>.description:before{
+					content:'Provides:';
+					font-family:UbuntuSansBold;
 				}
 			}
 			>.script:hover{

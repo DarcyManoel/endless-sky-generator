@@ -1,5 +1,5 @@
 let generationTextHeader=`#\tthis text was generated using endless-sky-generator on github\n`
-function scriptGenerateSales(){
+function scriptCheaterSales(){
 	let shipNames=nodes
 		.filter(node=>node.line.startsWith(`ship `)) // select only nodes that define ships
 		.map(ship=>ship.line.match(/(['"`])(?:\\.|(?!\1).)*?\1/g)?.at(-1)) // extract only the last quoted ship name from the line, to account for variant ships
@@ -10,7 +10,7 @@ function scriptGenerateSales(){
 		.sort()
 	copyToClipboard(`${generationTextHeader}shipyard "cheater: everything"\n\t${shipNames.join(`\n\t`)}\noutfitter "cheater: everything"\n\t${outfitNames.join(`\n\t`)}`) // copy formatted sales block to clipboard
 }
-function scriptVanillaRevealSystems(){
+function scriptCheaterMapEvents(){
 	let systemNames=nodes
 		.filter(node=>node.line.startsWith(`system `)) // select only nodes that define systems
 		.map(system=>system.line.slice(7)) // extract system name by removing the node key
