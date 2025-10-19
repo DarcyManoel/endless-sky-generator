@@ -2,6 +2,12 @@ let generationTextHeader=`#\tthis text was generated using endless-sky-generator
 function scriptCheaterSales(){
 	let shipNames=nodes
 		.filter(node=>node.line.startsWith(`ship `)) // select only nodes that define ships
+		.filter(ship=>{
+			let names=[...ship.line.matchAll(/(['"`])(?:\\.|(?!\1).)*?\1/g)] // capture all quoted names in the line (handles mixed quote styles)
+			let isVariant=names.length>1
+			let hasChildAdd=ship.children.some(child=>child.line.startsWith(`add `)) // check if any child line begins with 'add '
+			return isVariant||!hasChildAdd // keep variant ships or base ships without 'add' children
+		}) // exclude base ships that modify existing ships with 'add', keep all variant ships
 		.map(ship=>ship.line.match(/(['"`])(?:\\.|(?!\1).)*?\1/g)?.at(-1)) // extract only the last quoted ship name from the line, to account for variant ships
 		.sort()
 	let outfitNames=nodes
