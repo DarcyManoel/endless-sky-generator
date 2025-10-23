@@ -45,12 +45,10 @@ function parseLinesToTree(){
 			if(!line.trim())continue // skip empty or whitespace-only lines since they hold no data
 			let indent=line.match(/^\t*/)[0].length // count leading tabs to determine indentation depth
 			let node={line:line.trim(),children:[]} // create a node object with line content and empty children array
-			let closestStack=stack[stack.length-1] // cache most recently stacked node to reduce operations
-			while(stack.length&&closestStack.indent>=indent){
+			while(stack.length&&stack.at(-1).indent>=indent){
 				stack.pop() // remove the most recently stacked node since its indent is too deep to be the parent of the current line
-				closestStack=stack[stack.length-1] // update reference to the new top of the stack to find the correct parent
 			} // ensure the stack's top node has an indent smaller than the current line so we attach the node to the correct parent
-			closestStack.children.push(node) // attach current node to the most recent valid parent
+			stack.at(-1).children.push(node) // attach current node to the most recent valid parent
 			stack.push({...node,indent}) // push current node onto stack with its indent level to track nesting
 		}
 	}
